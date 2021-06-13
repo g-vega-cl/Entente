@@ -4,12 +4,22 @@ import openSocket from 'socket.io-client';
 
 
 const Socket = () => {
-  const [io, setIo] = useState<any>(); 
-  
+  const [io, setIo] = useState<any>();
+  const [socketMessages, setSocketMessages] = useState<string[]>([]);
+   
   useEffect(()=>{
     console.log("useEffect");
     setIo(openSocket('http://localhost:5000'));
   },[]);
+
+  if(io){
+    io.on('example_message',(message:string)=>{
+      console.log("msg")
+      setSocketMessages([...socketMessages, message])
+    });
+  }
+  
+  console.log(socketMessages);
   
   
   const sendSocketIO = () => {
