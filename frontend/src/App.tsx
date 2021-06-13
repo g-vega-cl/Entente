@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Lobby from './components/Lobby/Lobby';
 import Auth from "./components/Auth/Auth";
+import socket from './components/Socket/Socket';
 
 
 
@@ -18,6 +19,7 @@ function App() {
     <BrowserRouter>
         <Switch>
           <Route path="/" exact component={Lobby}/>
+          <Route path="/socket" exact component={socket}/>
           <Route path="/auth" exact component={Auth}/>
         </Switch>
     </BrowserRouter>

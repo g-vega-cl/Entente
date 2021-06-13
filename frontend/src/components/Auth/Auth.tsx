@@ -30,7 +30,7 @@ const Auth = () => {
     <div>
       <form onSubmit={handleSubmit}>
           <GoogleLogin
-            clientId="694141851748-g1k0fjoel6cc1q316edptlsvapdmbedt.apps.googleusercontent.com"
+            clientId="694141851748-ha0pnc5isi94s5f0va5es3c5o1cfrlve.apps.googleusercontent.com"
             render={(renderProps) => (
               <button
                 onClick={renderProps.onClick}
