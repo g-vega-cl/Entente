@@ -23,7 +23,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           germany: createGermany(),
         },
       }).save().then(async (newMatch) => {
-        await socket.join(newMatch._id);
+        await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
         return matchOnlineUsers;
       });
@@ -42,7 +42,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           germany: createGermany(),
         },
       }).save().then(async (newMatch) => {
-        await socket.join(newMatch._id);
+        await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
         return matchOnlineUsers;
       });
@@ -61,7 +61,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           germany: createGermany(),
         },
       }).save().then(async (newMatch) => {
-        await socket.join(newMatch._id);
+        await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
         return matchOnlineUsers;
       });
@@ -80,7 +80,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           germany: createGermany(),
         },
       }).save().then(async (newMatch) => {
-        await socket.join(newMatch._id);
+        await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
         return matchOnlineUsers;
       });
@@ -99,7 +99,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           germany: createGermany(),
         },
       }).save().then(async (newMatch) => {
-        await socket.join(newMatch._id);
+        await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
         return matchOnlineUsers;
       });
@@ -118,7 +118,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           germany: createGermany(true, userId),
         },
       }).save().then(async (newMatch) => {
-        await socket.join(newMatch._id);
+        await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
         return matchOnlineUsers;
       });

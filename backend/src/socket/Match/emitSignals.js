@@ -4,7 +4,8 @@ const emitSignals = async (io, socket, currentMatch) => {
   const finalCurrentMatch = await Match.findOne({ _id: currentMatch._id });
   console.log('Find final current match');
   if (io) {
-    socket.join(finalCurrentMatch._id);
+    socket.join(`${finalCurrentMatch._id}`);
+    console.log('rooms in io ', io.sockets.adapter.rooms);
     io.emit('found_match_from_user', finalCurrentMatch.onlineUsers);
     console.log('emitting found match from user ');
     if (finalCurrentMatch.onlineUsers === 6) {
