@@ -5,8 +5,9 @@ import createGermany from './Nations/germany.js';
 import createRussia from './Nations/russia.js';
 import createUK from './Nations/uk.js';
 import createItaly from './Nations/italy.js';
+import emitSignals from './emitSignals.js';
 
-const createMatch = async (userId, preferredNation, socket) => {
+const createMatch = async (userId, preferredNation, socket, io) => {
   switch (preferredNation) {
     case 'spain':
       await new Match({
@@ -21,8 +22,10 @@ const createMatch = async (userId, preferredNation, socket) => {
           russia: createRussia(),
           germany: createGermany(),
         },
-      }).save().then((newMatch) => {
-        socket.join(newMatch._id);
+      }).save().then(async (newMatch) => {
+        await socket.join(newMatch._id);
+        const matchOnlineUsers = await emitSignals(io, socket, newMatch);
+        return matchOnlineUsers;
       });
       break;
     case 'italy':
@@ -38,8 +41,10 @@ const createMatch = async (userId, preferredNation, socket) => {
           russia: createRussia(),
           germany: createGermany(),
         },
-      }).save().then((newMatch) => {
-        socket.join(newMatch._id);
+      }).save().then(async (newMatch) => {
+        await socket.join(newMatch._id);
+        const matchOnlineUsers = await emitSignals(io, socket, newMatch);
+        return matchOnlineUsers;
       });
       break;
     case 'france':
@@ -55,8 +60,10 @@ const createMatch = async (userId, preferredNation, socket) => {
           russia: createRussia(),
           germany: createGermany(),
         },
-      }).save().then((newMatch) => {
-        socket.join(newMatch._id);
+      }).save().then(async (newMatch) => {
+        await socket.join(newMatch._id);
+        const matchOnlineUsers = await emitSignals(io, socket, newMatch);
+        return matchOnlineUsers;
       });
       break;
     case 'uk':
@@ -72,8 +79,10 @@ const createMatch = async (userId, preferredNation, socket) => {
           russia: createRussia(),
           germany: createGermany(),
         },
-      }).save().then((newMatch) => {
-        socket.join(newMatch._id);
+      }).save().then(async (newMatch) => {
+        await socket.join(newMatch._id);
+        const matchOnlineUsers = await emitSignals(io, socket, newMatch);
+        return matchOnlineUsers;
       });
       break;
     case 'russia':
@@ -89,8 +98,10 @@ const createMatch = async (userId, preferredNation, socket) => {
           russia: createRussia(true, userId),
           germany: createGermany(),
         },
-      }).save().then((newMatch) => {
-        socket.join(newMatch._id);
+      }).save().then(async (newMatch) => {
+        await socket.join(newMatch._id);
+        const matchOnlineUsers = await emitSignals(io, socket, newMatch);
+        return matchOnlineUsers;
       });
       break;
     default:
@@ -106,8 +117,10 @@ const createMatch = async (userId, preferredNation, socket) => {
           russia: createRussia(),
           germany: createGermany(true, userId),
         },
-      }).save().then((newMatch) => {
-        socket.join(newMatch._id);
+      }).save().then(async (newMatch) => {
+        await socket.join(newMatch._id);
+        const matchOnlineUsers = await emitSignals(io, socket, newMatch);
+        return matchOnlineUsers;
       });
       break;
   }

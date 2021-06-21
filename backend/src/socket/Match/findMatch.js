@@ -2,6 +2,7 @@ import Match from '../../models/match.model.js';
 import User from '../../models/user.model.js';
 import createMatch from './createMatch.js';
 import joinMatch from './joinMatch.js';
+import emitSignals from './emitSignals.js';
 
 const findMatch = async (data, io, socket) => {
   const user = await User.findOneAndUpdate({ name: data.name }, {
@@ -20,19 +21,13 @@ const findMatch = async (data, io, socket) => {
       }
     }
   } else {
-    await createMatch(user._id, data.preferredNation, socket);
-    return 1;
+    const matchOnlineUsers = await createMatch(user._id, data.preferredNation, socket, io);
+    return matchOnlineUsers;
   }
 
-  const finalCurrentMatch = await Match.findOne({ _id: currentMatch._id });
-  if (io) {
-    socket.join(finalCurrentMatch._id);
-    io.to(finalCurrentMatch._id).emit('found_match_from_user', finalCurrentMatch.onlineUsers);
-    if (finalCurrentMatch.onlineUsers === 6) {
-      io.to(finalCurrentMatch._id).emit('starting_match', finalCurrentMatch.onlineUsers);
-    }
-  }
-  return finalCurrentMatch.onlineUsers;
+  const matchOnlineUsers = await emitSignals(io, socket, currentMatch);
+  console.log('out matchonline ', matchOnlineUsers);
+  return matchOnlineUsers;
 };
 
 export default findMatch;

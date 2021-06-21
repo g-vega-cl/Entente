@@ -1,13 +1,4 @@
-import Index from './index.models.js';
-
 export const home = async (req, res) => {
-  const newIndex = new Index({
-    logged: 1,
-    date: new Date(),
-  });
-  newIndex.save().then((newMatch) => {
-        socket.join(newMatch._id);
-      });
   res.send('Welcome');
 };
 
