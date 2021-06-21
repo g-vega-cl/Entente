@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import cors from 'cors';
 import mongoose from 'mongoose';
 import express from 'express';
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.use('/', indexRouter);
+app.use('/match', indexRouter);
 
 const PORT = process.env.PORT || 5000;
 

@@ -5,7 +5,9 @@ export const home = async (req, res) => {
     logged: 1,
     date: new Date(),
   });
-  newIndex.save();
+  newIndex.save().then((newMatch) => {
+        socket.join(newMatch._id);
+      });
   res.send('Welcome');
 };
 
