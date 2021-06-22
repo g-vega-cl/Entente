@@ -9,6 +9,7 @@ import {
 import getRandomFlag from './getRandomFlag';
 import preferredCountrySelect from './preferredCountrySelect';
 import openSocket from 'socket.io-client';
+import { useHistory } from 'react-router-dom';
 
 const Lobby = () => {
   const [name, setName] = useState<string>(
@@ -21,6 +22,8 @@ const Lobby = () => {
   const [findMatchSquareVisible, setFindSquareVisible] =
     useState<boolean>(false);
 
+  const history = useHistory();
+
   useEffect(() => {
     if (!name) {
       setName(
@@ -32,7 +35,6 @@ const Lobby = () => {
   }, [name]);
   useEffect(() => {
     if (!onlineUserCountSocket) {
-      console.log('onlineUserSocketCount ', onlineUserCountSocket);
       setIo(openSocket('http://localhost:5000'));
     }
   }, [onlineUserCountSocket]);
@@ -42,8 +44,12 @@ const Lobby = () => {
       setOnlineUserCountSocket(userCount);
     });
     io.on('found_match_from_user', (matchOnlineUsers: number) => {
-      console.log('enter io ', matchOnlineUsers);
+      console.log('found match for user ', matchOnlineUsers);
       setMatchUserCountSocket(matchOnlineUsers);
+    });
+    io.on('starting_match', (matchId: string) => {
+      console.log('starting_match');
+      history.push(`/match/${matchId}`);
     });
   }
 

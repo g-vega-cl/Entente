@@ -1,15 +1,14 @@
 import Match from '../../models/match.model.js';
 
 const emitSignals = async (io, socket, currentMatch) => {
+  await new Promise((resolve) => setTimeout(resolve, 50));
   const finalCurrentMatch = await Match.findOne({ _id: currentMatch._id });
-  console.log('Find final current match');
   if (io) {
     socket.join(`${finalCurrentMatch._id}`);
-    console.log('rooms in io ', io.sockets.adapter.rooms);
     io.emit('found_match_from_user', finalCurrentMatch.onlineUsers);
-    console.log('emitting found match from user ');
-    if (finalCurrentMatch.onlineUsers === 6) {
-      io.to(finalCurrentMatch._id).emit('starting_match', finalCurrentMatch.onlineUsers);
+    if (finalCurrentMatch.onlineUsers === 3) {
+      io.to(`${finalCurrentMatch._id}`).emit('starting_match', finalCurrentMatch._id);
+      await Match.findOneAndUpdate({ _id: currentMatch._id }, { open: false });
     }
   }
   return finalCurrentMatch.onlineUsers;

@@ -17,7 +17,7 @@ const findMatch = async (data, io, socket) => {
     if (!currentMatch.onlineUsersArray.includes(user._id)) {
       const [newData, nationFound] = await joinMatch(currentMatch, user._id, data, socket);
       if (!nationFound) {
-        findMatch(newData);
+        await findMatch(newData);
       }
     }
   } else {
@@ -26,7 +26,6 @@ const findMatch = async (data, io, socket) => {
   }
 
   const matchOnlineUsers = await emitSignals(io, socket, currentMatch);
-  console.log('out matchonline ', matchOnlineUsers);
   return matchOnlineUsers;
 };
 
