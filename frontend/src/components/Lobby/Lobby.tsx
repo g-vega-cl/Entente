@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Button, Col, Row } from 'antd';
 import {
   uniqueNamesGenerator,
@@ -8,15 +8,17 @@ import {
 } from 'unique-names-generator';
 import getRandomFlag from './getRandomFlag';
 import preferredCountrySelect from './preferredCountrySelect';
-import openSocket from 'socket.io-client';
+// import openSocket from 'socket.io-client';
 import { useHistory } from 'react-router-dom';
+import { ioContext } from '../../App';
 
 const Lobby = () => {
   const [name, setName] = useState<string>(
     localStorage.getItem('user_name') || ''
   );
   const [preferredNation, setPreferredNation] = useState<string>('france');
-  const [io, setIo] = useState<any>();
+  const io = useContext(ioContext);
+  // const [io, setIo] = useState<any>();
   const [onlineUserCountSocket, setOnlineUserCountSocket] = useState<any>();
   const [matchUserCountSocket, setMatchUserCountSocket] = useState<any>(1);
   const [findMatchSquareVisible, setFindSquareVisible] =
@@ -33,11 +35,11 @@ const Lobby = () => {
       );
     }
   }, [name]);
-  useEffect(() => {
-    if (!onlineUserCountSocket) {
-      setIo(openSocket('http://localhost:5000'));
-    }
-  }, [onlineUserCountSocket]);
+  // useEffect(() => {
+  //   if (!onlineUserCountSocket) {
+  //     setIo(openSocket('http://localhost:5000'));
+  //   }
+  // }, [onlineUserCountSocket]);
 
   if (io) {
     io.on('online_user_count', (userCount: any) => {
@@ -48,7 +50,6 @@ const Lobby = () => {
       setMatchUserCountSocket(matchOnlineUsers);
     });
     io.on('starting_match', (matchId: string) => {
-      console.log('starting_match');
       history.push(`/match/${matchId}`);
     });
   }

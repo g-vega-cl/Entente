@@ -7,7 +7,7 @@ const createSpain = (online, useridentifier) => {
     authority: 18,
     hdi: 80,
     cash: 790,
-    income: 480,
+    territories: ['NorthSpain', 'SouthSpain'],
     focus: 'production',
     intelligence: [],
     secret: {
@@ -21,7 +21,6 @@ const createSpain = (online, useridentifier) => {
       stability: [],
       hdi: [],
       authority: [],
-      production: [],
     },
     modifiers: [],
   } : {
@@ -45,7 +44,6 @@ const createSpain = (online, useridentifier) => {
       stability: [],
       hdi: [],
       authority: [],
-      production: [],
     },
     modifiers: [],
   };

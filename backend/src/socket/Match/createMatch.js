@@ -6,8 +6,11 @@ import createRussia from './Nations/russia.js';
 import createUK from './Nations/uk.js';
 import createItaly from './Nations/italy.js';
 import emitSignals from './emitSignals.js';
+import defaultTerritories from './defaultTerritories.js';
+import { createCardDatabase } from '../../eventCards/eventCards.js';
 
 const createMatch = async (userId, preferredNation, socket, io) => {
+  await createCardDatabase();
   switch (preferredNation) {
     case 'spain':
       await new Match({
@@ -22,6 +25,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           russia: createRussia(),
           germany: createGermany(),
         },
+        territories: defaultTerritories,
       }).save().then(async (newMatch) => {
         await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
@@ -41,6 +45,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           russia: createRussia(),
           germany: createGermany(),
         },
+        territories: defaultTerritories,
       }).save().then(async (newMatch) => {
         await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
@@ -60,6 +65,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           russia: createRussia(),
           germany: createGermany(),
         },
+        territories: defaultTerritories,
       }).save().then(async (newMatch) => {
         await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
@@ -79,6 +85,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           russia: createRussia(),
           germany: createGermany(),
         },
+        territories: defaultTerritories,
       }).save().then(async (newMatch) => {
         await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
@@ -98,6 +105,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           russia: createRussia(true, userId),
           germany: createGermany(),
         },
+        territories: defaultTerritories,
       }).save().then(async (newMatch) => {
         await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);
@@ -117,6 +125,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
           russia: createRussia(),
           germany: createGermany(true, userId),
         },
+        territories: defaultTerritories,
       }).save().then(async (newMatch) => {
         await socket.join(`${newMatch._id}`);
         const matchOnlineUsers = await emitSignals(io, socket, newMatch);

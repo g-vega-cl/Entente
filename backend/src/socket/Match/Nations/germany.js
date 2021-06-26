@@ -7,7 +7,7 @@ const createGermany = (online, useridentifier) => {
     authority: 15,
     hdi: 94,
     cash: 254,
-    income: 1729,
+    territories: ['SouthGermany', 'WestGermany', 'EastGermany'],
     focus: 'production',
     intelligence: [],
     secret: {
@@ -21,7 +21,6 @@ const createGermany = (online, useridentifier) => {
       stability: [],
       hdi: [],
       authority: [],
-      production: [],
     },
     modifiers: [],
   } : {
@@ -45,7 +44,6 @@ const createGermany = (online, useridentifier) => {
       stability: [],
       hdi: [],
       authority: [],
-      production: [],
     },
     modifiers: [],
   };

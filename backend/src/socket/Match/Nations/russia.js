@@ -7,7 +7,7 @@ const createRussia = (online, useridentifier) => {
     authority: 73,
     hdi: 64,
     cash: 605,
-    income: 468,
+    territories: ['EastRussia', 'WestRussia'],
     focus: 'production',
     intelligence: [],
     secret: {
@@ -21,7 +21,6 @@ const createRussia = (online, useridentifier) => {
       stability: [],
       hdi: [],
       authority: [],
-      production: [],
     },
     modifiers: [],
   } : {
@@ -45,7 +44,6 @@ const createRussia = (online, useridentifier) => {
       stability: [],
       hdi: [],
       authority: [],
-      production: [],
     },
     modifiers: [],
   };

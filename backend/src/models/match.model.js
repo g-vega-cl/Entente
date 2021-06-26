@@ -22,12 +22,19 @@ const intelligenceSchema = mongoose.Schema({
   attackerName: { type: String, required: true },
 });
 
+const territoriesSchema = mongoose.Schema({
+  name: { type: String, required: true },
+  control: { type: Number, required: true },
+  income: { type: Number, required: true },
+  influence: { type: Number, required: true, default: 0 },
+  owner: { type: String, required: false, default: '' },
+});
+
 const nationSchema = mongoose.Schema({
   useridentifier: { type: mongoose.Schema.Types.ObjectId },
   online: { type: Boolean, required: true, default: false },
   deck: { type: Array, required: true, default: [] },
   territories: { type: Array, required: true, default: [] },
-  income: { type: Number, required: true, default: 50 },
   cash: { type: Number, required: true, default: 100 },
   stability: {
     type: Number, required: true, default: 50, min: 0, max: 100,
@@ -54,7 +61,6 @@ const nationSchema = mongoose.Schema({
     stability: { type: Array, default: [] },
     hdi: { type: Array, default: [] },
     authority: { type: Array, default: [] },
-    production: { type: Array, default: [] },
   },
   modifiers: [modifierSchema],
 });
@@ -67,10 +73,14 @@ const nationSchema = mongoose.Schema({
 // https://en.wikipedia.org/wiki/List_of_countries_by_foreign-exchange_reserves
 // https://en.wikipedia.org/wiki/International_Innovation_Index
 // https://en.wikipedia.org/wiki/List_of_countries_by_real_GDP_growth_rate
+// https://www.globalfirepower.com/countries-listing.php
+// https://www.usnews.com/news/best-countries/power-rankings
+// https://www.businessinsider.in/defense/ranked-the-worlds-20-strongest-militaries/slidelist/51930339.cms
 const match = mongoose.Schema({
   onlineUsers: { type: Number, required: true },
   onlineUsersArray: { type: Array, required: true, default: [] },
   open: { type: Boolean, required: true },
+  year: { type: Number, required: true, default: 2021 },
   nations: {
     spain: nationSchema,
     france: nationSchema,
@@ -79,6 +89,7 @@ const match = mongoose.Schema({
     germany: nationSchema,
     russia: nationSchema,
   },
+  territories: [territoriesSchema],
 });
 
 const Match = mongoose.model('Match', match);
