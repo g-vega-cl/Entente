@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StarFilled } from '@ant-design/icons';
 
-const Interim = ({ color, setClickedRegion }) => {
+const Interim = ({ color, setClickedRegion, Influence }) => {
   const [selected, setSelected] = useState(false);
   return (
     <>
@@ -27,6 +27,22 @@ const Interim = ({ color, setClickedRegion }) => {
           setClickedRegion('Interim');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '61%',
+          right: '49%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {Influence}
+      </p>
       <svg id='Interim' height='410' width='410' viewBox='0 0 800 800'>
         <path
           id='XMLID_1_'

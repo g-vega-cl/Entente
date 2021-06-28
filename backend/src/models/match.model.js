@@ -32,7 +32,9 @@ const territoriesSchema = mongoose.Schema({
 
 const nationSchema = mongoose.Schema({
   useridentifier: { type: mongoose.Schema.Types.ObjectId },
+  name: { type: String, required: true, default: '' },
   online: { type: Boolean, required: true, default: false },
+  turn: { type: Number, required: true, default: 0 },
   deck: { type: Array, required: true, default: [] },
   territories: { type: Array, required: true, default: [] },
   cash: { type: Number, required: true, default: 100 },

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StarFilled } from '@ant-design/icons';
 
-const Balcans = ({ color, setClickedRegion }) => {
+const Balcans = ({ color, setClickedRegion, Influence }) => {
   const [selected, setSelected] = useState(false);
   return (
     <>
@@ -27,6 +27,22 @@ const Balcans = ({ color, setClickedRegion }) => {
           setClickedRegion('Balcans');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '59%',
+          right: '49%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {Influence}
+      </p>
       <svg id='Balcans' height='510' width='510' viewBox='0 0 800 800'>
         <path
           id='XMLID_1_'

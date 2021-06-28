@@ -1,6 +1,7 @@
 const createItaly = (online, useridentifier) => {
   const nation = useridentifier ? {
     useridentifier,
+    turn: 0,
     online: online || false,
     stability: 48,
     innovation: 0.51,
@@ -9,6 +10,7 @@ const createItaly = (online, useridentifier) => {
     cash: 200,
     territories: ['NorthItaly', 'SouthItaly'],
     focus: 'production',
+    name: 'Italy',
     intelligence: [],
     secret: {
       operations: [],
@@ -30,8 +32,10 @@ const createItaly = (online, useridentifier) => {
     authority: 23,
     hdi: 75,
     cash: 200,
-    income: 863,
     focus: 'production',
+    territories: ['NorthItaly', 'SouthItaly'],
+    name: 'Italy',
+    turn: 0,
     intelligence: [],
     secret: {
       operations: [],

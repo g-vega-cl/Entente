@@ -8,20 +8,26 @@ import socket from './components/Socket/Socket';
 import openSocket from 'socket.io-client';
 import 'antd/dist/antd.css';
 
-const dataContext = React.createContext({ data: [] });
+export const dataContext = React.createContext<any>({});
 export const ioContext = React.createContext<any>({});
 export function App() {
-  const [data, setData] = useState([]);
+  const [turnData, setTurnData] = useState<any>();
   useEffect(() => {
-    setData([]);
-  }, [setData]);
+    setTurnData({
+      event: false,
+      allTerritories: [],
+    });
+  }, [setTurnData]);
+  console.log('turnDataContext ', turnData);
   const [io, setIo] = useState<any>();
   useEffect(() => {
     setIo(openSocket('http://localhost:5000'));
   }, [setIo]);
   if (io) {
     return (
-      <dataContext.Provider value={{ data }}>
+      <dataContext.Provider
+        value={{ turnData: turnData, setTurnData: setTurnData }}
+      >
         <ioContext.Provider value={io}>
           <BrowserRouter>
             <Switch>

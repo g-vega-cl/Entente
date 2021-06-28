@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { StarFilled } from '@ant-design/icons';
 
-const France = ({ franceEast, franceWest, franceSouth, setClickedRegion }) => {
+const France = ({
+  franceEast,
+  franceWest,
+  franceSouth,
+  setClickedRegion,
+  franceEastInfluence,
+  franceWestInfluence,
+  FranceSouthInfluence,
+}) => {
   const [isSelectedSouthFrance, setIsSelectedSouthFrance] = useState(false);
   const [isSelectedEastFrance, setIsSelectedEastFrance] = useState(false);
   const [isSelectedWestFrance, setIsSelectedWestFrance] = useState(false);
@@ -11,7 +19,7 @@ const France = ({ franceEast, franceWest, franceSouth, setClickedRegion }) => {
         style={{
           fontSize: '38px',
           position: 'absolute',
-          top: '50%',
+          top: '47%',
           right: '48%',
           filter: 'saturate(10%)',
           color: isSelectedSouthFrance ? 'white' : 'black',
@@ -29,6 +37,22 @@ const France = ({ franceEast, franceWest, franceSouth, setClickedRegion }) => {
           setClickedRegion('SouthFrance');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '58%',
+          right: '47%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {FranceSouthInfluence}
+      </p>
       <StarFilled
         style={{
           fontSize: '38px',
@@ -51,6 +75,22 @@ const France = ({ franceEast, franceWest, franceSouth, setClickedRegion }) => {
           setClickedRegion('EastFrance');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '26%',
+          right: '38%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {franceEastInfluence}
+      </p>
       <StarFilled
         style={{
           fontSize: '38px',
@@ -73,6 +113,22 @@ const France = ({ franceEast, franceWest, franceSouth, setClickedRegion }) => {
           setClickedRegion('WestFrance');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '31%',
+          right: '66%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {franceWestInfluence}
+      </p>
       <svg id='france' height='400' width='400' viewBox='0 0 700 700'>
         <defs id='defs28' />
         <path

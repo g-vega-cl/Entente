@@ -8,7 +8,6 @@ import {
 } from 'unique-names-generator';
 import getRandomFlag from './getRandomFlag';
 import preferredCountrySelect from './preferredCountrySelect';
-// import openSocket from 'socket.io-client';
 import { useHistory } from 'react-router-dom';
 import { ioContext } from '../../App';
 
@@ -18,12 +17,12 @@ const Lobby = () => {
   );
   const [preferredNation, setPreferredNation] = useState<string>('france');
   const io = useContext(ioContext);
-  // const [io, setIo] = useState<any>();
   const [onlineUserCountSocket, setOnlineUserCountSocket] = useState<any>();
   const [matchUserCountSocket, setMatchUserCountSocket] = useState<any>(1);
   const [findMatchSquareVisible, setFindSquareVisible] =
     useState<boolean>(false);
 
+  const [findMatchEmitted, setFindMatchEmitted] = useState<boolean>(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -35,11 +34,6 @@ const Lobby = () => {
       );
     }
   }, [name]);
-  // useEffect(() => {
-  //   if (!onlineUserCountSocket) {
-  //     setIo(openSocket('http://localhost:5000'));
-  //   }
-  // }, [onlineUserCountSocket]);
 
   if (io) {
     io.on('online_user_count', (userCount: any) => {
@@ -64,8 +58,11 @@ const Lobby = () => {
       preferredNation,
     };
     if (io) {
-      io.emit('find_match', matchData);
-      localStorage.setItem('user_name', name);
+      if (!findMatchEmitted) {
+        io.emit('find_match', matchData);
+        localStorage.setItem('user_name', name);
+      }
+      setFindMatchEmitted(true);
     }
     toggleSquare();
   };

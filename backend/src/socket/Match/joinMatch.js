@@ -11,6 +11,9 @@ const joinMatch = async (currentMatch, userId, data) => {
     if (key === data.preferredNation) {
       let availiableNation = {};
       if (!currentMatch.nations[key].online) {
+        const newNation = currentMatch.nations[key];
+        newNation.online = true;
+        newNation.useridentifier = userId;
         switch (data.preferredNation) {
           case 'spain':
             availiableNation = await Match.findOneAndUpdate({
@@ -21,11 +24,12 @@ const joinMatch = async (currentMatch, userId, data) => {
               onlineUsersArray: [...currentMatch.onlineUsersArray, userId],
               nations: {
                 ...currentMatch.nations,
-                spain: { useridentifier: userId, online: true },
+                spain: {
+                  ...newNation,
+                },
               },
             },
             { new: true });
-
             break;
           case 'france':
             availiableNation = await Match.findOneAndUpdate({
@@ -36,7 +40,7 @@ const joinMatch = async (currentMatch, userId, data) => {
               onlineUsersArray: [...currentMatch.onlineUsersArray, userId],
               nations: {
                 ...currentMatch.nations,
-                france: { useridentifier: userId, online: true },
+                france: { ...newNation },
               },
             },
             { new: true });
@@ -51,7 +55,7 @@ const joinMatch = async (currentMatch, userId, data) => {
               onlineUsersArray: [...currentMatch.onlineUsersArray, userId],
               nations: {
                 ...currentMatch.nations,
-                uk: { useridentifier: userId, online: true },
+                uk: { ...newNation },
               },
             },
             { new: true });
@@ -66,7 +70,7 @@ const joinMatch = async (currentMatch, userId, data) => {
               onlineUsersArray: [...currentMatch.onlineUsersArray, userId],
               nations: {
                 ...currentMatch.nations,
-                germany: { useridentifier: userId, online: true },
+                germany: { ...newNation },
               },
             },
             { new: true });
@@ -81,7 +85,7 @@ const joinMatch = async (currentMatch, userId, data) => {
               onlineUsersArray: [...currentMatch.onlineUsersArray, userId],
               nations: {
                 ...currentMatch.nations,
-                russia: { useridentifier: userId, online: true },
+                russia: { ...newNation },
               },
             },
             { new: true });
@@ -96,7 +100,7 @@ const joinMatch = async (currentMatch, userId, data) => {
               onlineUsersArray: [...currentMatch.onlineUsersArray, userId],
               nations: {
                 ...currentMatch.nations,
-                italy: { useridentifier: userId, online: true },
+                italy: { ...newNation },
               },
             },
             { new: true });

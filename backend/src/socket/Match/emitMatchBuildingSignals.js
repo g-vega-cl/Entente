@@ -1,6 +1,6 @@
 import Match from '../../models/match.model.js';
 
-const emitSignals = async (io, socket, currentMatch) => {
+const emitMatchBuldingSignals = async (io, socket, currentMatch) => {
   await new Promise((resolve) => setTimeout(resolve, 50));
   const finalCurrentMatch = await Match.findOne({ _id: currentMatch._id });
   if (io) {
@@ -14,4 +14,4 @@ const emitSignals = async (io, socket, currentMatch) => {
   return finalCurrentMatch.onlineUsers;
 };
 
-export default emitSignals;
+export default emitMatchBuldingSignals;

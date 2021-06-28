@@ -1,6 +1,7 @@
 const createUK = (online, useridentifier) => {
   const nation = useridentifier ? {
     useridentifier,
+    turn: 0,
     online: online || false,
     stability: 75,
     innovation: 1.42,
@@ -10,6 +11,7 @@ const createUK = (online, useridentifier) => {
     territories: ['NorthUK', 'MidUK', 'SouthUK'],
     focus: 'production',
     intelligence: [],
+    name: 'UK',
     secret: {
       operations: [],
       ongoing: [],
@@ -32,6 +34,9 @@ const createUK = (online, useridentifier) => {
     cash: 209,
     income: 966,
     focus: 'production',
+    territories: ['NorthUK', 'MidUK', 'SouthUK'],
+    turn: 0,
+    name: 'UK',
     intelligence: [],
     secret: {
       operations: [],

@@ -1,6 +1,7 @@
 const createSpain = (online, useridentifier) => {
   const nation = useridentifier ? {
     useridentifier,
+    turn: 0,
     online: online || false,
     stability: 55,
     innovation: 0.93,
@@ -15,6 +16,7 @@ const createSpain = (online, useridentifier) => {
       ongoing: [],
     },
     tech: [],
+    name: 'Spain',
     graph: {
       income: [],
       cash: [],
@@ -32,7 +34,10 @@ const createSpain = (online, useridentifier) => {
     cash: 790,
     income: 480,
     focus: 'production',
+    turn: 0,
+    name: 'Spain',
     intelligence: [],
+    territories: ['NorthSpain', 'SouthSpain'],
     secret: {
       operations: [],
       ongoing: [],

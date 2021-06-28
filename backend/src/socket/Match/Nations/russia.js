@@ -1,6 +1,7 @@
 const createRussia = (online, useridentifier) => {
   const nation = useridentifier ? {
     useridentifier,
+    turn: 0,
     online: online || false,
     stability: 33,
     innovation: 0.2,
@@ -10,6 +11,7 @@ const createRussia = (online, useridentifier) => {
     territories: ['EastRussia', 'WestRussia'],
     focus: 'production',
     intelligence: [],
+    name: 'Russia',
     secret: {
       operations: [],
       ongoing: [],
@@ -32,6 +34,9 @@ const createRussia = (online, useridentifier) => {
     cash: 605,
     income: 468,
     focus: 'production',
+    territories: ['EastRussia', 'WestRussia'],
+    turn: 0,
+    name: 'Russia',
     intelligence: [],
     secret: {
       operations: [],

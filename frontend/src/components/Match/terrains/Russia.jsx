@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { StarFilled } from '@ant-design/icons';
 
-const Russia = ({ RussiaEast, RussiaWest, setClickedRegion }) => {
+const Russia = ({
+  RussiaEast,
+  RussiaWest,
+  setClickedRegion,
+  RussiaEastInfluence,
+  RussiaWestInfluence,
+}) => {
   const [selectedRussiaEast, setSelectedRussiaEast] = useState(false);
   const [selectedRussiaWest, setSelectedRussiaWest] = useState(false);
   return (
@@ -28,6 +34,22 @@ const Russia = ({ RussiaEast, RussiaWest, setClickedRegion }) => {
           setClickedRegion('EastRussia');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '70%',
+          right: '77%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {RussiaEastInfluence}
+      </p>
       <StarFilled
         style={{
           fontSize: '38px',
@@ -50,6 +72,22 @@ const Russia = ({ RussiaEast, RussiaWest, setClickedRegion }) => {
           setClickedRegion('WestRussia');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '65%',
+          right: '37%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {RussiaWestInfluence}
+      </p>
       <svg id='Russia' height='900' width='900' viewBox='0 0 800 800'>
         <path
           d='m 144.77011,730.77082 1.01,1.4 1.07,-0.59 -0.04,-1.25 -0.44,0.01 -0.34,-0.63 -0.5,0.02 -0.37,-0.38 0.26,-0.8 -0.4,-1.32 0.57,-0.54 -0.02,-0.74 0.94,-0.62 -0.67,-0.48 0.37,-0.39 -0.16,-0.56 -0.62,-0.21 0.23,-0.57 -1.21,-0.08 -0.65,-0.57 -0.64,1.99 -1.16,0.37 -1.89,-0.39 -1.11,0.12 -1.37,-0.57 -0.66,-0.7 -0.84,-0.14 -0.22,-0.44 0.44,-0.57 0.49,0.43 0.8,-0.14 1.03,0.64 1.65,-0.1 2.02,-0.91 1.08,-0.86 1.18,0.2 0.66,0.61 1.11,0.4 0.81,-0.4 1.14,0.07 1.44,1.2 2.25,5.05 -0.65,0.25 -0.92,-2.54 -0.49,-0.46 -0.7,0.07 -0.53,1.54 1.03,2.29 -0.6,1.71 0.47,1.84 -0.38,1.26 -1,0.85 -2.52,-1.55 -1.48,0.1 -0.6,-0.52 0.67,-0.31 -0.17,-0.54 0.54,-0.24 -0.58,-1.01 0,0 z'

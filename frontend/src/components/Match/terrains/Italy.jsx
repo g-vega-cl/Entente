@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { StarFilled } from '@ant-design/icons';
 
-const Italy = ({ ItalyNorth, ItalySouth, setClickedRegion }) => {
+const Italy = ({
+  ItalyNorth,
+  ItalySouth,
+  setClickedRegion,
+  ItalyNorthInfluence,
+  ItalySouthInfluence,
+}) => {
   const [selectedSouthItaly, setSelectedSouthItaly] = useState(false);
   const [selectedNorthItaly, setSelectedNorthItaly] = useState(false);
   return (
@@ -28,6 +34,22 @@ const Italy = ({ ItalyNorth, ItalySouth, setClickedRegion }) => {
           setClickedRegion('SouthItaly');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '50%',
+          right: '35%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {ItalySouthInfluence}
+      </p>
       <StarFilled
         style={{
           fontSize: '38px',
@@ -50,6 +72,22 @@ const Italy = ({ ItalyNorth, ItalySouth, setClickedRegion }) => {
           setClickedRegion('NorthItaly');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '23%',
+          right: '64%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {ItalyNorthInfluence}
+      </p>
       <svg id='Italy' height='350' width='350' viewBox='0 0 800 800'>
         <path
           d='m 299.30021,372.14051 -0.11,-0.11 -0.1,0.03 -0.17,0.04 -0.16,0.26 -0.03,0.06 0.06,0.08 0.06,-0.02 0.26,0.06 0.2,-0.08 0.02,-0.06 -0.04,-0.08 z'

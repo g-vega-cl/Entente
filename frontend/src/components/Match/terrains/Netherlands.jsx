@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { StarFilled } from '@ant-design/icons';
 
-const Netherlands = ({ Netherlands, setClickedRegion }) => {
+const Netherlands = ({
+  Netherlands,
+  setClickedRegion,
+  NetherlandsInfluence,
+}) => {
   const [selectedNetherlands, setSelectedNetherlands] = useState(false);
   return (
     <>
@@ -27,6 +31,22 @@ const Netherlands = ({ Netherlands, setClickedRegion }) => {
           setClickedRegion('Netherlands');
         }}
       />
+      <p
+        style={{
+          fontSize: '18px',
+          position: 'absolute',
+          fontWeight: 'bold',
+          color: 'black',
+          top: '12%',
+          right: '49%',
+          filter: 'saturate(10%)',
+          border: 'solid',
+          borderColor: 'black',
+          boxShadow: '1px 1px 1px black',
+        }}
+      >
+        {NetherlandsInfluence}
+      </p>
       <svg id='Netherlands' height='150' width='150' viewBox='0 0 800 800'>
         <path
           id='XMLID_2_'
