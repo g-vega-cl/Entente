@@ -11,7 +11,13 @@ const MilitaryButton = (
   militaryBuy: any,
   setMilitaryBuy: any,
   deployTerritory: any,
-  setDeployTerritory: any
+  setDeployTerritory: any,
+  attackTerritory: any,
+  setAttackTerritory: any,
+  fromAttackTerritory: any,
+  setFromAttackTerritory: any,
+  attackValue: any,
+  setAttackValue: any
 ) => {
   const indicatorsFontSize = '24px';
   const screenWidth = window.screen.availWidth;
@@ -26,13 +32,46 @@ const MilitaryButton = (
 
   const onBuyMilitary = () => {
     if (io) {
-      //NEED TO WRITE THIS IN BACKEND.
-      io.emit('buy_military_influence', { user_name, match_id, militaryBuy, deployTerritory });
+      io.emit('buy_military_influence', {
+        user_name,
+        match_id,
+        militaryBuy,
+        deployTerritory,
+      });
     }
+    toggleShowMilitary();
   };
 
   const onSelectDeployTerritory = (value: any) => {
     setDeployTerritory(value);
+  };
+
+  const getmaxTerritoryInfluence = (data: any) => {
+    if (data.allTerritories.length > 0) {
+      let maxTerritoryInfluence = 0;
+      data.allTerritories.forEach((allTerritory: any) => {
+        if (allTerritory.owner === data.nation_name) {
+          if (maxTerritoryInfluence < allTerritory.influence) {
+            maxTerritoryInfluence = allTerritory.influence;
+          }
+        }
+      });
+      return maxTerritoryInfluence;
+    }
+    return 0;
+  };
+
+  const onAttackTerritory = () => {
+    if (io) {
+      io.emit('attack_territory', {
+        user_name,
+        match_id,
+        attackTerritory,
+        fromAttackTerritory,
+        attackValue,
+      });
+    }
+    toggleShowMilitary();
   };
 
   if (data.turn) {
@@ -128,6 +167,136 @@ const MilitaryButton = (
                 >
                   Buy
                 </Button>
+              </Col>
+            </Row>
+            <Row style={{ paddingTop: '13px', paddingBottom: '13px' }}>
+              <Col
+                span={6}
+                style={{
+                  display: 'flex',
+                  fontSize: '18px',
+                  paddingLeft: '15px',
+                }}
+              >
+                <InputNumber
+                  max={getmaxTerritoryInfluence(data)}
+                  onChange={(value: any) => {
+                    setAttackValue(value);
+                  }}
+                  value={attackValue}
+                />
+              </Col>
+              <Col
+                span={6}
+                style={{
+                  display: 'flex',
+                  fontSize: '18px',
+                  justifyContent: 'flex-end',
+                  paddingRight: '15px',
+                }}
+              >
+                <Select
+                  style={{ width: 120 }}
+                  value={fromAttackTerritory}
+                  onChange={(value: any) => setFromAttackTerritory(value)}
+                >
+                  {data.territories.map((territoryName: any, key: any) => {
+                    return (
+                      <Option key={key} value={territoryName.name}>
+                        {territoryName.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Col>
+              <Col
+                span={6}
+                style={{
+                  display: 'flex',
+                  fontSize: '18px',
+                  justifyContent: 'flex-end',
+                  paddingRight: '15px',
+                }}
+              >
+                <Select
+                  style={{ width: 120 }}
+                  value={attackTerritory}
+                  onChange={(value: any) => setAttackTerritory(value)}
+                >
+                  {/* IN THE BACKEND CHECK IF YOU ARE OWNER OF TERRITORY, IF YOU ARE, MOVE THEM */}
+                  {data.allTerritories.map(
+                    (allTerritoriesName: any, key: any) => {
+                      return (
+                        <Option key={key} value={allTerritoriesName.name}>
+                          {allTerritoriesName.name}
+                        </Option>
+                      );
+                    }
+                  )}
+                </Select>
+              </Col>
+              <Col
+                span={6}
+                style={{
+                  display: 'flex',
+                  fontSize: '18px',
+                  justifyContent: 'flex-end',
+                  paddingRight: '15px',
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    onAttackTerritory();
+                  }}
+                >
+                  Attack!
+                </Button>
+              </Col>
+            </Row>
+            <Row style={{ paddingTop: '13px', paddingBottom: '13px' }}>
+              <Col
+                span={6}
+                style={{
+                  display: 'flex',
+                  fontSize: '18px',
+                  justifyContent: 'flex-end',
+                  paddingRight: '15px',
+                }}
+              >
+                <p>How many attack influence?</p>
+              </Col>
+              <Col
+                span={6}
+                style={{
+                  display: 'flex',
+                  fontSize: '18px',
+                  justifyContent: 'flex-end',
+                  paddingRight: '15px',
+                }}
+              >
+                <p>From where do we attack</p>
+              </Col>
+              <Col
+                span={6}
+                style={{
+                  display: 'flex',
+                  fontSize: '18px',
+                  justifyContent: 'flex-end',
+                  paddingRight: '15px',
+                }}
+              >
+                <p>Who should we attack?</p>
+              </Col>
+              <Col
+                span={6}
+                style={{
+                  display: 'flex',
+                  fontSize: '18px',
+                  justifyContent: 'flex-end',
+                  paddingRight: '15px',
+                }}
+              >
+                <p>Confirm attack?</p>
               </Col>
             </Row>
           </div>

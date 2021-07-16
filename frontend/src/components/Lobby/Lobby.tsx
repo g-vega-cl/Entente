@@ -10,6 +10,7 @@ import getRandomFlag from './getRandomFlag';
 import preferredCountrySelect from './preferredCountrySelect';
 import { useHistory } from 'react-router-dom';
 import { ioContext } from '../../App';
+import GetTurn from '../Match/GetTurn';
 
 const Lobby = () => {
   const [name, setName] = useState<string>(
@@ -21,9 +22,9 @@ const Lobby = () => {
   const [matchUserCountSocket, setMatchUserCountSocket] = useState<any>(1);
   const [findMatchSquareVisible, setFindSquareVisible] =
     useState<boolean>(false);
-
   const [findMatchEmitted, setFindMatchEmitted] = useState<boolean>(false);
   const history = useHistory();
+  console.log('Lobby again?');
 
   useEffect(() => {
     if (!name) {
@@ -45,6 +46,7 @@ const Lobby = () => {
     });
     io.on('starting_match', (matchId: string) => {
       history.push(`/match/${matchId}`);
+      GetTurn(io, '', '', matchId);
     });
   }
 

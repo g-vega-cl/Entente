@@ -1,4 +1,4 @@
-import { Tooltip, Button } from 'antd';
+import { Tooltip } from 'antd';
 
 const topBar = (data: any) => {
   const indicatorsFontSize = '24px';
@@ -52,6 +52,11 @@ const topBar = (data: any) => {
         <Tooltip title='innovation'>
           <p style={{ fontSize: indicatorsFontSize, marginLeft: '20px' }}>
             🔬 {data.innovation.toFixed(2)}
+          </p>
+        </Tooltip>
+        <Tooltip title='year'>
+          <p style={{ fontSize: indicatorsFontSize, marginLeft: '20px' }}>
+            {data.year}
           </p>
         </Tooltip>
       </div>

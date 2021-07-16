@@ -1,11 +1,12 @@
+import { useParams } from 'react-router-dom';
+
 const GetTurn = (
-  params: any,
   io: any,
   eventChoice: string,
-  eventId: string
+  eventId: string,
+  match_id: string
 ) => {
   const user_name = localStorage.getItem('user_name');
-  const match_id = params?.id;
   if (io) {
     io.emit('get_turn', { user_name, match_id, eventChoice, eventId });
   }

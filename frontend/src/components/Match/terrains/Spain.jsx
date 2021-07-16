@@ -83,7 +83,7 @@ const Spain = ({
           color: 'black',
         }}
       >
-        {influenceSouth}
+        {influenceNorth}
       </p>
 
       <svg id='spain' height='600' width='600' viewBox='0 0 700 700'>

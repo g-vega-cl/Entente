@@ -1,17 +1,17 @@
-import { useParams } from 'react-router-dom';
 import { Button, Row, Col } from 'antd';
+import { useParams } from 'react-router-dom';
 import GetTurn from './GetTurn';
 //Note: We are letting people know the modifiers before choosing. But idk for now.
 //To fix just send event titles and descriptions and an identifier and send call to backend when it happens.
 const Event = (io: any, event: any, setShowEvent: any) => {
-  const params: any = useParams();
   const screenWidth = window.screen.availWidth;
   const eventVW = screenWidth < 1000 ? '80vw' : '50vw';
   const eventRight = screenWidth < 1000 ? '8%' : '25%';
-
+  const params: any = useParams();
+  const matchId = params?.id;
   const selectEventChoice = (choice: string) => {
     setShowEvent(false);
-    GetTurn(params, io, choice, event._id);
+    GetTurn(io, choice, event._id, matchId);
   };
   if (event?.description) {
     return (

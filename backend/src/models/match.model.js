@@ -65,6 +65,7 @@ const nationSchema = mongoose.Schema({
     authority: { type: Array, default: [] },
   },
   modifiers: [modifierSchema],
+  finishTurn: { type: Boolean, default: false },
 });
 
 // https://en.wikipedia.org/wiki/List_of_countries_by_Fragile_States_Index
@@ -92,6 +93,7 @@ const match = mongoose.Schema({
     russia: nationSchema,
   },
   territories: [territoriesSchema],
+  lastTurn: { type: Date, required: true, default: new Date() },
 });
 
 const Match = mongoose.model('Match', match);

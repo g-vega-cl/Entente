@@ -4,7 +4,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Lobby from './components/Lobby/Lobby';
 import Auth from './components/Auth/Auth';
 import Match from './components/Match/Match';
-import socket from './components/Socket/Socket';
 import openSocket from 'socket.io-client';
 import 'antd/dist/antd.css';
 
@@ -18,7 +17,6 @@ export function App() {
       allTerritories: [],
     });
   }, [setTurnData]);
-  console.log('turnDataContext ', turnData);
   const [io, setIo] = useState<any>();
   useEffect(() => {
     setIo(openSocket('http://localhost:5000'));
@@ -32,7 +30,6 @@ export function App() {
           <BrowserRouter>
             <Switch>
               <Route path='/' exact component={Lobby} />
-              <Route path='/socket' exact component={socket} />
               <Route path='/auth' exact component={Auth} />
               <Route path='/match/:id' exact component={Match} />
             </Switch>
