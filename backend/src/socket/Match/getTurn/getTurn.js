@@ -23,10 +23,8 @@ const getTurn = async (data, io, type) => {
   await new Promise((resolve) => setTimeout(resolve, 50));
   if (type === 'turnEvent') {
     if (!eventChoice) {
-      console.log('no choice match_id', match_id, 'user_name', user_name);
       getTurnBeforeEvent(match, io, user, user_name, match_id);
     } else {
-      console.log('choice match_id', match_id, 'user_name', user_name);
       getTurnAfterEvent(match, io, user, user_name, match_id, eventChoice, eventId);
     }
   }

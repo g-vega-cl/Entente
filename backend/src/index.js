@@ -7,6 +7,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import indexRouter from './routes/index/index.js';
 import startSocket from './socket/sockets.js';
+import matchRouter from './routes/match/match.api.js';
 
 dotenv.config();
 const app = express();
@@ -18,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.use('/', indexRouter);
-app.use('/match', indexRouter);
+app.use('/match', matchRouter);
 
 const PORT = process.env.PORT || 5000;
 

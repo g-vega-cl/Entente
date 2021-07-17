@@ -2,9 +2,9 @@ import Match from '../../models/match.model.js';
 import User from '../../models/user.model.js';
 import createMatch from './createMatch.js';
 import joinMatch from './joinMatch.js';
-import emitMatchBuldingSignals from './emitMatchBuildingSignals.js';
+import buildMatch from './buildMatch.js';
 
-const findMatch = async (data, io) => {
+const findMatch = async (data) => {
   const user = await User.findOneAndUpdate({ name: data.name }, {
     name: data.name,
     online: true,
@@ -25,7 +25,7 @@ const findMatch = async (data, io) => {
     return matchOnlineUsers;
   }
 
-  const matchOnlineUsers = await emitMatchBuldingSignals(io, currentMatch);
+  const matchOnlineUsers = await buildMatch(currentMatch);
   return matchOnlineUsers;
 };
 

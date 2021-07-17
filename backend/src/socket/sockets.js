@@ -1,4 +1,4 @@
-import { onStartOnlineUser, onConnectOnlineUsers, onDisconnectOnlineUsers } from './onlineUsersCount/onlineUsers.controllers.js';
+import { onStartOnlineUser, onDisconnectOnlineUsers } from './onlineUsersCount/onlineUsers.controllers.js';
 import findMatch from './Match/findMatch.js';
 import getTurn from './Match/getTurn/getTurn.js';
 import matchLoop from './matchLoop.js';
@@ -8,14 +8,12 @@ const startSocket = async (io) => {
   matchLoop(io);
 
   io.on('connection', async (socket) => {
-    onConnectOnlineUsers(io);
-
     socket.on('disconnect', async () => {
       onDisconnectOnlineUsers(io);
     });
 
     socket.on('find_match', async (data) => {
-      await findMatch(data, io, socket);
+      await findMatch(data, io);
     });
 
     socket.on('get_turn', async (data) => {

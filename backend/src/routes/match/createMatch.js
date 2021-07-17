@@ -5,11 +5,11 @@ import createGermany from '../../Nations/germany.js';
 import createRussia from '../../Nations/russia.js';
 import createUK from '../../Nations/uk.js';
 import createItaly from '../../Nations/italy.js';
-import emitMatchBuldingSignals from './emitMatchBuildingSignals.js';
+import buildMatch from './buildMatch.js';
 import defaultTerritories from '../../Nations/defaultTerritories.js';
 import { createCardDatabase } from '../../eventCards/eventCards.js';
 
-const createMatch = async (userId, preferredNation, socket, io) => {
+const createMatch = async (userId, preferredNation) => {
   await createCardDatabase();
   switch (preferredNation) {
     case 'spain':
@@ -27,8 +27,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        await socket.join(`${newMatch._id}`);
-        const matchOnlineUsers = await emitMatchBuldingSignals(io, socket, newMatch);
+        const matchOnlineUsers = await buildMatch(newMatch);
         return matchOnlineUsers;
       });
       break;
@@ -47,8 +46,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        await socket.join(`${newMatch._id}`);
-        const matchOnlineUsers = await emitMatchBuldingSignals(io, socket, newMatch);
+        const matchOnlineUsers = await buildMatch(newMatch);
         return matchOnlineUsers;
       });
       break;
@@ -67,8 +65,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        await socket.join(`${newMatch._id}`);
-        const matchOnlineUsers = await emitMatchBuldingSignals(io, socket, newMatch);
+        const matchOnlineUsers = await buildMatch(newMatch);
         return matchOnlineUsers;
       });
       break;
@@ -87,8 +84,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        await socket.join(`${newMatch._id}`);
-        const matchOnlineUsers = await emitMatchBuldingSignals(io, socket, newMatch);
+        const matchOnlineUsers = await buildMatch(newMatch);
         return matchOnlineUsers;
       });
       break;
@@ -107,8 +103,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        await socket.join(`${newMatch._id}`);
-        const matchOnlineUsers = await emitMatchBuldingSignals(io, socket, newMatch);
+        const matchOnlineUsers = await buildMatch(newMatch);
         return matchOnlineUsers;
       });
       break;
@@ -127,8 +122,7 @@ const createMatch = async (userId, preferredNation, socket, io) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        await socket.join(`${newMatch._id}`);
-        const matchOnlineUsers = await emitMatchBuldingSignals(io, socket, newMatch);
+        const matchOnlineUsers = await buildMatch(newMatch);
         return matchOnlineUsers;
       });
       break;

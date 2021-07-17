@@ -7,14 +7,6 @@ export const onStartOnlineUser = async () => {
   });
 };
 
-export const onConnectOnlineUsers = async (io) => {
-  const onlineUserCount = await OnlineUsers.findOneAndUpdate({ instance: '1' }, { $inc: { count: 1 } }, {
-    new: true,
-    upsert: true,
-  });
-  io.emit('online_user_count', onlineUserCount);
-};
-
 export const onDisconnectOnlineUsers = async (io) => {
   const onlineUserCount = await OnlineUsers.findOneAndUpdate({ instance: '1' }, { $inc: { count: -1 } }, {
     new: true,
