@@ -1,14 +1,17 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable camelcase */
 import mongodb from 'mongodb';
-import Match from '../../../models/match.model.js';
+import Match from '../models/match.model.js';
 
 const { ObjectId } = mongodb;
 
-const getTurnMilitaryMove = async (
-  match, io, user, user_name, match_id, attackTerritory,
-  fromAttackTerritory,
-  attackValue,
+const getTurnMilitary = async (
+  match,
+  io,
+  user,
+  user_name,
+  match_id,
+  militaryBuy,
+  deployTerritory,
 ) => {
   const turnData = {};
   let nationsKeys = [];
@@ -17,41 +20,29 @@ const getTurnMilitaryMove = async (
   }
   nationsKeys.forEach(async (nationKey) => {
     const nation = match.nations[nationKey];
+    // see military and change relevant values.
     if (`${nation.useridentifier}` === `${user._id}`) {
       turnData.nation_name = nation.name;
-      const attackValuesObject = {
-        fromAttackTerritoryInfluence: 0,
-        toAttackTerritoryInfluence: 0,
-        fromAttackTerritoryIndex: 0,
-        toAttackTerritoryIndex: 0,
-        toAttackTerritoryOwned: false,
-      };
-      match.territories.forEach((milMatchTerritory, index) => {
-        if (milMatchTerritory.name === fromAttackTerritory) {
-          attackValuesObject.fromAttackTerritoryInfluence = milMatchTerritory.influence;
-          attackValuesObject.fromAttackTerritoryIndex = index;
-        }
-        if (milMatchTerritory.name === attackTerritory) {
-          attackValuesObject.toAttackTerritoryInfluence = milMatchTerritory.influence;
-          attackValuesObject.toAttackTerritoryIndex = index;
-          if (milMatchTerritory.owner === nation.name) {
-            attackValuesObject.toAttackTerritoryOwned = true;
+      let militaryModifier = 1;
+      if (nation.modifiers.length > 0) {
+        nation.modifiers.forEach((modifier) => {
+          if (modifier.name === 'militaryCost') {
+            militaryModifier *= modifier.value;
           }
-        }
-      });
-      if (attackValuesObject.fromAttackTerritoryInfluence >= attackValue) {
-        if (!attackValuesObject.toAttackTerritoryOwned) {
-          match.territories[attackValuesObject.fromAttackTerritoryIndex].influence -= attackValue;
-          match.territories[attackValuesObject.toAttackTerritoryIndex].influence -= attackValue;
-          if (match.territories[attackValuesObject.toAttackTerritoryIndex].influence < 0) {
-            match.territories[attackValuesObject.toAttackTerritoryIndex].owner = nation.name;
-          }
-        } else {
-          match.territories[attackValuesObject.fromAttackTerritoryIndex].influence -= attackValue;
-          match.territories[attackValuesObject.toAttackTerritoryIndex].influence += attackValue;
-        }
+        });
       }
-
+      const influenceToBuy = militaryBuy * militaryModifier;
+      if (nation.cash > influenceToBuy) {
+        nation.cash -= influenceToBuy;
+        // eslint-disable-next-line no-param-reassign
+        match.territories = match.territories.map((milMatchTerritory) => {
+          if (milMatchTerritory.name === deployTerritory) {
+            // eslint-disable-next-line no-param-reassign
+            milMatchTerritory.influence += influenceToBuy;
+          }
+          return milMatchTerritory;
+        });
+      }
       const newNation = await Match.findOneAndUpdate(
         {
           _id: new ObjectId(match_id),
@@ -94,4 +85,4 @@ const getTurnMilitaryMove = async (
   });
 };
 
-export default getTurnMilitaryMove;
+export default getTurnMilitary;

@@ -21,12 +21,12 @@ const findMatch = async (data) => {
       }
     }
   } else {
-    const matchOnlineUsers = await createMatch(user._id, data.preferredNation);
-    return matchOnlineUsers;
+    const finalCurrentMatch = await createMatch(user._id, data.preferredNation);
+    return finalCurrentMatch;
   }
 
-  const matchOnlineUsers = await buildMatch(currentMatch);
-  return matchOnlineUsers;
+  const finalCurrentMatch = await buildMatch(currentMatch);
+  return finalCurrentMatch;
 };
 
 export default findMatch;

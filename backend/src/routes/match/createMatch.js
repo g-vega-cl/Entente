@@ -27,8 +27,8 @@ const createMatch = async (userId, preferredNation) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        const matchOnlineUsers = await buildMatch(newMatch);
-        return matchOnlineUsers;
+        const finalCurrentMatch = await buildMatch(newMatch);
+        return finalCurrentMatch;
       });
       break;
     case 'italy':
@@ -46,8 +46,8 @@ const createMatch = async (userId, preferredNation) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        const matchOnlineUsers = await buildMatch(newMatch);
-        return matchOnlineUsers;
+        const finalCurrentMatch = await buildMatch(newMatch);
+        return finalCurrentMatch;
       });
       break;
     case 'france':
@@ -65,8 +65,8 @@ const createMatch = async (userId, preferredNation) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        const matchOnlineUsers = await buildMatch(newMatch);
-        return matchOnlineUsers;
+        const finalCurrentMatch = await buildMatch(newMatch);
+        return finalCurrentMatch;
       });
       break;
     case 'uk':
@@ -84,8 +84,8 @@ const createMatch = async (userId, preferredNation) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        const matchOnlineUsers = await buildMatch(newMatch);
-        return matchOnlineUsers;
+        const finalCurrentMatch = await buildMatch(newMatch);
+        return finalCurrentMatch;
       });
       break;
     case 'russia':
@@ -103,8 +103,8 @@ const createMatch = async (userId, preferredNation) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        const matchOnlineUsers = await buildMatch(newMatch);
-        return matchOnlineUsers;
+        const finalCurrentMatch = await buildMatch(newMatch);
+        return finalCurrentMatch;
       });
       break;
     default:
@@ -122,8 +122,8 @@ const createMatch = async (userId, preferredNation) => {
         },
         territories: defaultTerritories,
       }).save().then(async (newMatch) => {
-        const matchOnlineUsers = await buildMatch(newMatch);
-        return matchOnlineUsers;
+        const finalCurrentMatch = await buildMatch(newMatch);
+        return finalCurrentMatch;
       });
       break;
   }

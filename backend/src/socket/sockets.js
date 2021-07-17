@@ -1,6 +1,6 @@
 import { onStartOnlineUser, onDisconnectOnlineUsers } from './onlineUsersCount/onlineUsers.controllers.js';
 import findMatch from './Match/findMatch.js';
-import getTurn from './Match/getTurn/getTurn.js';
+import getTurn from '../getTurn/getTurn.js';
 import matchLoop from './matchLoop.js';
 
 const startSocket = async (io) => {

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import EventCards from '../../../eventCards/eventCards.model.js';
+import EventCards from '../eventCards/eventCards.model.js';
 
 const getTurnBeforeEvent = async (match, io, user, user_name, match_id) => {
   const turnData = {};

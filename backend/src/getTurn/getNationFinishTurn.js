@@ -1,12 +1,11 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable camelcase */
 import mongodb from 'mongodb';
-import Match from '../../../models/match.model.js';
-import EventCards from '../../../eventCards/eventCards.model.js';
+import Match from '../models/match.model.js';
 
 const { ObjectId } = mongodb;
 
-const getRefreshMatchLoop = async (
+const getNationFinishTurn = async (
   match, io, user, user_name, match_id,
 ) => {
   const turnData = {};
@@ -18,15 +17,7 @@ const getRefreshMatchLoop = async (
     const nation = match.nations[nationKey];
     if (`${nation.useridentifier}` === `${user._id}`) {
       turnData.nation_name = nation.name;
-      const now = new Date();
-      const elapsedSeconds = (now.getTime() - match.lastTurn.getTime()) / 1000;
-      if (elapsedSeconds > 120) {
-        match.year += 1;
-        match.lastTurn = new Date();
-        const nationEvents = await EventCards.find({ $or: [{ country: 'all' }, { country: nation.name }] });
-        turnData.event = nationEvents[Math.round(Math.random() * nationEvents.length)];
-      }
-
+      nation.finishTurn = true;
       const newNation = await Match.findOneAndUpdate(
         {
           _id: new ObjectId(match_id),
@@ -48,6 +39,7 @@ const getRefreshMatchLoop = async (
       turnData.innovation = newNation.nations[nationKey].innovation;
       turnData.authority = newNation.nations[nationKey].authority;
       turnData.hdi = newNation.nations[nationKey].hdi;
+      turnData.cash = newNation.nations[nationKey].cash;
       turnData.territories = newNation.nations[nationKey].territories;
       turnData.modifiers = newNation.nations[nationKey].modifiers;
       turnData.year = match.year;
@@ -62,13 +54,10 @@ const getRefreshMatchLoop = async (
           }
         });
       });
-      turnData.cash = elapsedSeconds > 120 ? newNation.nations[nationKey].cash + turnData.income
-        : newNation.nations[nationKey].cash;
       turnData.allTerritories = match.territories;
-      turnData.lastTurn = newNation.lastTurn;
       io.to(`${match._id}`).emit(`turn/${user_name}-${match_id}`, turnData);
     }
   });
 };
 
-export default getRefreshMatchLoop;
+export default getNationFinishTurn;

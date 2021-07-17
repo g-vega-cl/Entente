@@ -8,7 +8,7 @@ const buildMatch = async (currentMatch) => {
     await Match.findOneAndUpdate({ _id: currentMatch._id }, { open: false });
   }
 
-  return finalCurrentMatch.onlineUsers;
+  return finalCurrentMatch;
 };
 
 export default buildMatch;

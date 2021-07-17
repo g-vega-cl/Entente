@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import mongodb from 'mongodb';
-import EventCards from '../../../eventCards/eventCards.model.js';
-import Match from '../../../models/match.model.js';
+import EventCards from '../eventCards/eventCards.model.js';
+import Match from '../models/match.model.js';
 
 const { ObjectId } = mongodb;
 

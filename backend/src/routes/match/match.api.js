@@ -1,14 +1,14 @@
 import express from 'express';
 import findMatch from './findMatch.js';
+import checkIfMatchStarted from './checkIfMatchStarted.js';
 
 const router = express();
 
 router.post('/find_match', async (req, res) => {
   const data = req.body;
-  console.log('DATA', data, new Date());
   if (data.name) {
-    await findMatch(data);
-    res.status(200).send('Success');
+    const finalCurrentMatch = await findMatch(data);
+    res.status(200).send({ matchID: finalCurrentMatch?._id });
     return;
   }
   res.status(500).send('No data');
@@ -16,13 +16,17 @@ router.post('/find_match', async (req, res) => {
 
 router.post('/get_match_data', async (req, res) => {
   const data = req.body;
-  console.log('DATA', data, new Date());
-  if (data.name) {
-    await findMatch(data);
-    res.status(200).send('Success');
-    return;
+  if (data.action === 'wait_start_match') {
+    const result = await checkIfMatchStarted(data);
+    if (result) {
+      res.status(200).send(result);
+    } else {
+      res.status(200).send({
+        event: false,
+        allTerritories: [],
+      });
+    }
   }
-  res.status(500).send('No data');
 });
 
 export default router;
