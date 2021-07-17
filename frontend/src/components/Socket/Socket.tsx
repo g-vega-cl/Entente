@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import 'whatwg-fetch';
 import openSocket from 'socket.io-client';
 
 const Socket = () => {
@@ -7,7 +6,7 @@ const Socket = () => {
   const [socketMessages, setSocketMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    setIo(openSocket('http://localhost:5000'));
+    setIo(openSocket('https://localhost:5000'));
   }, []);
 
   if (io) {

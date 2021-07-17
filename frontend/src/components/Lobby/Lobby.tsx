@@ -11,19 +11,24 @@ import preferredCountrySelect from './preferredCountrySelect';
 import { useHistory } from 'react-router-dom';
 import { ioContext } from '../../App';
 import GetTurn from '../Match/GetTurn';
+import axios from 'axios';
+
+const requestAxios = axios.create({
+  baseURL: `${process.env.REACT_APP_API_URL}`,
+  timeout: 1000,
+});
 
 const Lobby = () => {
+  const io = useContext(ioContext);
+  const history = useHistory();
   const [name, setName] = useState<string>(
     localStorage.getItem('user_name') || ''
   );
   const [preferredNation, setPreferredNation] = useState<string>('france');
-  const io = useContext(ioContext);
-  const [onlineUserCountSocket, setOnlineUserCountSocket] = useState<any>();
   const [matchUserCountSocket, setMatchUserCountSocket] = useState<any>(1);
   const [findMatchSquareVisible, setFindSquareVisible] =
     useState<boolean>(false);
   const [findMatchEmitted, setFindMatchEmitted] = useState<boolean>(false);
-  const history = useHistory();
   console.log('Lobby again?');
 
   useEffect(() => {
@@ -36,36 +41,19 @@ const Lobby = () => {
     }
   }, [name]);
 
-  if (io) {
-    io.on('online_user_count', (userCount: any) => {
-      setOnlineUserCountSocket(userCount);
-    });
-    io.on('found_match_from_user', (matchOnlineUsers: number) => {
-      console.log('found match for user ', matchOnlineUsers);
-      setMatchUserCountSocket(matchOnlineUsers);
-    });
-    io.on('starting_match', (matchId: string) => {
-      history.push(`/match/${matchId}`);
-      GetTurn(io, '', '', matchId);
-    });
-  }
-
   const toggleSquare = () => {
     setFindSquareVisible(!findMatchSquareVisible);
   };
 
-  const findMatch = () => {
+  const findMatch = async () => {
     const matchData = {
       name,
       preferredNation,
     };
-    if (io) {
-      if (!findMatchEmitted) {
-        io.emit('find_match', matchData);
-        localStorage.setItem('user_name', name);
-      }
-      setFindMatchEmitted(true);
-    }
+    await requestAxios.post(`/match/find_match`, matchData).then((res) => {
+      console.log('res', res);
+    });
+    localStorage.setItem('user_name', name);
     toggleSquare();
   };
 
@@ -97,12 +85,7 @@ const Lobby = () => {
           }}
         ></Col>
         <Col span={13} style={{ backgroundColor: 'white', border: 'solid' }}>
-          <Row>
-            <Col style={{ margin: 'auto' }}>
-              <p>Online users: {onlineUserCountSocket?.count}</p>
-            </Col>
-          </Row>
-          <Row>
+          <Row style={{ marginTop: '30px' }}>
             <Col style={{ margin: 'auto' }}>
               <Button
                 type='primary'
