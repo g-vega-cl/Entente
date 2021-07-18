@@ -5,13 +5,15 @@ import Match from '../models/match.model.js';
 
 const { ObjectId } = mongodb;
 
-const getTurnAfterEvent = async (match, io, user, user_name, match_id, eventChoice, eventId) => {
+const getTurnAfterEvent = async (match, user, match_id, eventChoice, eventId) => {
   const turnData = {};
   let nationsKeys = [];
   if (match?.nations) {
     nationsKeys = Object.keys(match?.nations);
   }
-  nationsKeys.forEach(async (nationKey) => {
+
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const nationKey of nationsKeys) {
     const nation = match.nations[nationKey];
     // see event and change relevant values.
     if (`${nation.useridentifier}` === `${user._id}`) {
@@ -79,9 +81,9 @@ const getTurnAfterEvent = async (match, io, user, user_name, match_id, eventChoi
         });
       });
       turnData.allTerritories = match.territories;
-      io.to(`${match._id}`).emit(`turn/${user_name}-${match_id}`, turnData);
     }
-  });
+  }
+  return turnData;
 };
 
 export default getTurnAfterEvent;

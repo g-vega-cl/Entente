@@ -1,6 +1,7 @@
 import express from 'express';
 import findMatch from './findMatch.js';
 import checkIfMatchStarted from './checkIfMatchStarted.js';
+import getTurn from '../../getTurn/getTurn.js';
 
 const router = express();
 
@@ -21,11 +22,49 @@ router.post('/get_match_data', async (req, res) => {
     if (result) {
       res.status(200).send(result);
     } else {
-      res.status(200).send({
+      res.status(500).send({
         event: false,
         allTerritories: [],
       });
     }
+  }
+  if (data.action === 'refresh_match') {
+    const result = await getTurn(data, 'refreshMatch');
+    if (result) {
+      res.status(200).send(result);
+    } else {
+      res.status(500).send(data);
+    }
+  }
+});
+
+router.post('/buy_military_influence', async (req, res) => {
+  const data = req.body;
+  const result = await getTurn(data, 'buy_military');
+  if (result) {
+    res.status(200).send(result);
+  } else {
+    res.status(500).send(data);
+  }
+});
+
+router.post('/attack_territory_event', async (req, res) => {
+  const data = req.body;
+  const result = await getTurn(data, 'attack_territory_event');
+  if (result) {
+    res.status(200).send(result);
+  } else {
+    res.status(500).send(data);
+  }
+});
+
+router.post('/send_turn_event', async (req, res) => {
+  const data = req.body;
+  const result = await getTurn(data, 'turnEvent');
+  if (result) {
+    res.status(200).send(result);
+  } else {
+    res.status(500).send(data);
   }
 });
 

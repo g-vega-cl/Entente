@@ -19,6 +19,8 @@ const findMatch = async (data) => {
       if (!nationFound) {
         await findMatch(newData);
       }
+    } else {
+      return currentMatch;
     }
   } else {
     const finalCurrentMatch = await createMatch(user._id, data.preferredNation);

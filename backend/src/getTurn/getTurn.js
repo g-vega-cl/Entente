@@ -11,7 +11,7 @@ import getRefreshMatchLoop from './getRefreshMatchLoop.js';
 
 const { ObjectId } = mongodb;
 
-const getTurn = async (data, io, type) => {
+const getTurn = async (data, type, io) => {
   const {
     user_name, match_id, eventChoice, eventId, militaryBuy, deployTerritory,
     attackTerritory,
@@ -20,21 +20,22 @@ const getTurn = async (data, io, type) => {
   } = data;
   const user = await User.findOne({ name: user_name });
   const match = await Match.findOne({ _id: ObjectId(match_id) });
+  const turnData = { current: {} };
   await new Promise((resolve) => setTimeout(resolve, 50));
   if (type === 'turnEvent') {
     if (!eventChoice) {
-      getTurnBeforeEvent(match, io, user, user_name, match_id);
+      turnData.current = await getTurnBeforeEvent(match, user);
     } else {
-      getTurnAfterEvent(match, io, user, user_name, match_id, eventChoice, eventId);
+      turnData.current = await getTurnAfterEvent(match, user, match_id, eventChoice, eventId);
     }
   }
 
-  if (type === 'militaryEvent') {
-    getTurnMilitary(match, io, user, user_name, match_id, militaryBuy, deployTerritory);
+  if (type === 'buy_military') {
+    turnData.current = await getTurnMilitary(match, user, match_id, militaryBuy, deployTerritory);
   }
 
   if (type === 'attack_territory_event') {
-    getTurnMilitaryMove(match, io, user, user_name, match_id, attackTerritory,
+    turnData.current = await getTurnMilitaryMove(match, user, match_id, attackTerritory,
       fromAttackTerritory,
       attackValue);
   }
@@ -43,10 +44,11 @@ const getTurn = async (data, io, type) => {
     getNationFinishTurn(match, io, user, user_name, match_id);
   }
 
-  if (type === 'refreshMatchLoop') {
-    // THINK OF A BETTER WAY.
-    getRefreshMatchLoop(match, io, user, user_name, match_id);
+  if (type === 'refreshMatch') {
+    turnData.current = await getRefreshMatchLoop(match, user, match_id);
   }
+
+  return turnData.current;
 };
 
 export default getTurn;

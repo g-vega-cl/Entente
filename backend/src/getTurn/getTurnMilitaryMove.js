@@ -6,7 +6,7 @@ import Match from '../models/match.model.js';
 const { ObjectId } = mongodb;
 
 const getTurnMilitaryMove = async (
-  match, io, user, user_name, match_id, attackTerritory,
+  match, user, match_id, attackTerritory,
   fromAttackTerritory,
   attackValue,
 ) => {
@@ -15,7 +15,9 @@ const getTurnMilitaryMove = async (
   if (match?.nations) {
     nationsKeys = Object.keys(match?.nations);
   }
-  nationsKeys.forEach(async (nationKey) => {
+
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const nationKey of nationsKeys) {
     const nation = match.nations[nationKey];
     if (`${nation.useridentifier}` === `${user._id}`) {
       turnData.nation_name = nation.name;
@@ -42,7 +44,7 @@ const getTurnMilitaryMove = async (
       if (attackValuesObject.fromAttackTerritoryInfluence >= attackValue) {
         if (!attackValuesObject.toAttackTerritoryOwned) {
           match.territories[attackValuesObject.fromAttackTerritoryIndex].influence -= attackValue;
-          match.territories[attackValuesObject.toAttackTerritoryIndex].influence -= attackValue;
+          match.territories[attackValuesObject.toAttackTerritoryIndex].influence -= attackValue / 3;
           if (match.territories[attackValuesObject.toAttackTerritoryIndex].influence < 0) {
             match.territories[attackValuesObject.toAttackTerritoryIndex].owner = nation.name;
           }
@@ -89,9 +91,9 @@ const getTurnMilitaryMove = async (
         });
       });
       turnData.allTerritories = match.territories;
-      io.to(`${match._id}`).emit(`turn/${user_name}-${match_id}`, turnData);
     }
-  });
+  }
+  return turnData;
 };
 
 export default getTurnMilitaryMove;
