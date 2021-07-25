@@ -58,7 +58,7 @@ const getRefreshMatchLoop = async (
     }
   }
 
-  if (((new Date().getTime() - new Date(match?.lastTurn).getTime()) / 1000) > 90) {
+  if (((new Date().getTime() - new Date(match?.lastTurn).getTime()) / 1000) > 75) {
     const newTurnData = await getTurnBeforeEvent(match, user);
     await Match.findOneAndUpdate({ _id: match._id }, { lastTurn: new Date() });
     await Match.findOneAndUpdate({ _id: match._id }, { year: match?.year + 1 });

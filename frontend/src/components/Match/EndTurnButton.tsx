@@ -7,7 +7,7 @@ const EndTurnButton = (data: any) => {
     if (data?.lastTurn) {
       const now = new Date();
       const secondsLeft = (
-        90 -
+        75 -
         (now.getTime() - new Date(data?.lastTurn).getTime()) / 1000
       ).toFixed(0);
       return `${secondsLeft}`;
