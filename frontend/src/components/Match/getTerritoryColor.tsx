@@ -6,31 +6,31 @@ const getTerrtoryColor = (currentTerritory: any, territories: any) => {
       switch (territory.owner.toLowerCase()) {
         case 'spain':
           returnedColor = 'yellow';
-          influence = territory.influence;
+          influence = territory.influence.toFixed(0);
           break;
         case 'france':
           returnedColor = '#4f75ff';
-          influence = territory.influence;
+          influence = territory.influence.toFixed(0);
           break;
         case 'uk':
           returnedColor = 'red';
-          influence = territory.influence;
+          influence = territory.influence.toFixed(0);
           break;
         case 'germany':
           returnedColor = 'brown';
-          influence = territory.influence;
+          influence = territory.influence.toFixed(0);
           break;
         case 'italy':
           returnedColor = '#00b806';
-          influence = territory.influence;
+          influence = territory.influence.toFixed(0);
           break;
         case 'russia':
           returnedColor = 'purple';
-          influence = territory.influence;
+          influence = territory.influence.toFixed(0);
           break;
         default:
           returnedColor = '#babab8';
-          influence = territory.influence;
+          influence = territory.influence.toFixed(0);
           break;
       }
     }

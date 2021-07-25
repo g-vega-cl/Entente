@@ -113,7 +113,7 @@ const MatchMap = ({ territories, setClickedRegion }: any) => {
             <Balcans
               color={getTerrtoryColor('Balkans', territories)[0]}
               setClickedRegion={setClickedRegion}
-              Influence={getTerrtoryColor('Interim', territories)[1]}
+              Influence={getTerrtoryColor('Balkans', territories)[1]}
             />
           </div>
         </div>

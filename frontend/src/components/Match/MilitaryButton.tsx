@@ -1,11 +1,11 @@
 import { Select, InputNumber, Button, Tooltip, Row, Col } from 'antd';
+import requestAxios from '../Axios/requestAxios';
 
 const { Option } = Select;
 const MilitaryButton = (
-  data: any,
+  turnData: any,
   setShowMilitary: any,
   showMilitary: boolean,
-  io: any,
   user_name: any,
   match_id: any,
   militaryBuy: any,
@@ -17,7 +17,10 @@ const MilitaryButton = (
   fromAttackTerritory: any,
   setFromAttackTerritory: any,
   attackValue: any,
-  setAttackValue: any
+  setAttackValue: any,
+  sendData: any,
+  showMilitaryAttack: boolean,
+  setShowMilitaryAttack: any
 ) => {
   const indicatorsFontSize = '24px';
   const screenWidth = window.screen.availWidth;
@@ -26,19 +29,26 @@ const MilitaryButton = (
   const toggleShowMilitary = () => {
     setShowMilitary(!showMilitary);
   };
+  const toggleShowMilitaryAttack = () => {
+    setShowMilitaryAttack(!showMilitaryAttack);
+  };
   const onChangeInput = (value: any) => {
     setMilitaryBuy(value);
   };
 
-  const onBuyMilitary = () => {
-    if (io) {
-      io.emit('buy_military_influence', {
-        user_name,
-        match_id,
-        militaryBuy,
-        deployTerritory,
+  const onBuyMilitary = async () => {
+    sendData.current.user_name = user_name;
+    sendData.current.match_id = match_id;
+    sendData.current.militaryBuy = militaryBuy;
+    sendData.current.deployTerritory = deployTerritory;
+
+    await requestAxios
+      .post(`/match/buy_military_influence`, sendData.current)
+      .then((res) => {
+        if (res.data) {
+          turnData.current = res.data;
+        }
       });
-    }
     toggleShowMilitary();
   };
 
@@ -61,20 +71,25 @@ const MilitaryButton = (
     return 0;
   };
 
-  const onAttackTerritory = () => {
-    if (io) {
-      io.emit('attack_territory', {
-        user_name,
-        match_id,
-        attackTerritory,
-        fromAttackTerritory,
-        attackValue,
+  const onAttackTerritory = async () => {
+    sendData.current = {};
+    sendData.current.user_name = user_name;
+    sendData.current.match_id = match_id;
+    sendData.current.attackTerritory = attackTerritory;
+    sendData.current.fromAttackTerritory = fromAttackTerritory;
+    sendData.current.attackValue = attackValue;
+
+    await requestAxios
+      .post(`/match/attack_territory_event`, sendData.current)
+      .then((res) => {
+        if (res.data) {
+          turnData.current = res.data;
+        }
       });
-    }
-    toggleShowMilitary();
+    toggleShowMilitaryAttack();
   };
 
-  if (data.turn) {
+  if (turnData.current.turn) {
     return (
       <>
         <Tooltip title='Buy influence'>
@@ -88,16 +103,41 @@ const MilitaryButton = (
               display: 'flex',
               boxShadow: '2px 2px 2px black',
               top: '45px',
+              justifyContent: 'center',
             }}
             onClick={() => toggleShowMilitary()}
           >
             <p
               style={{
-                padding: '5px',
                 fontSize: indicatorsFontSize,
               }}
             >
               💂{' '}
+            </p>
+          </Button>
+        </Tooltip>
+        <Tooltip title='Attack territory'>
+          <Button
+            style={{
+              position: 'absolute',
+              height: '45px',
+              width: '50px',
+              backgroundColor: 'white',
+              zIndex: 1,
+              display: 'flex',
+              boxShadow: '2px 2px 2px black',
+              top: '45px',
+              left: '70px',
+              justifyContent: 'center',
+            }}
+            onClick={() => toggleShowMilitaryAttack()}
+          >
+            <p
+              style={{
+                fontSize: indicatorsFontSize,
+              }}
+            >
+              💢{' '}
             </p>
           </Button>
         </Tooltip>
@@ -115,6 +155,20 @@ const MilitaryButton = (
           >
             <Row style={{ marginTop: '13px', marginBottom: '13px' }}>
               <Col
+                span={24}
+                style={{
+                  display: 'flex',
+                  fontSize: '18px',
+                  paddingLeft: '15px',
+                }}
+              >
+                <p>
+                  Buy {militaryBuy} influence in {deployTerritory}
+                </p>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: '13px', marginBottom: '13px' }}>
+              <Col
                 span={8}
                 style={{
                   display: 'flex',
@@ -123,7 +177,7 @@ const MilitaryButton = (
                 }}
               >
                 <InputNumber
-                  max={data.cash}
+                  max={turnData.current.cash}
                   onChange={onChangeInput}
                   value={militaryBuy}
                 />
@@ -142,13 +196,15 @@ const MilitaryButton = (
                   value={deployTerritory}
                   onChange={onSelectDeployTerritory}
                 >
-                  {data.territories.map((territoryName: any, key: any) => {
-                    return (
-                      <Option key={key} value={territoryName.name}>
-                        {territoryName.name}
-                      </Option>
-                    );
-                  })}
+                  {turnData.current.territories.map(
+                    (territoryName: any, key: any) => {
+                      return (
+                        <Option key={key} value={territoryName.name}>
+                          {territoryName.name}
+                        </Option>
+                      );
+                    }
+                  )}
                 </Select>
               </Col>
               <Col
@@ -169,6 +225,20 @@ const MilitaryButton = (
                 </Button>
               </Col>
             </Row>
+          </div>
+        )}
+        <div
+          style={{
+            zIndex: 1,
+            width: divVW,
+            backgroundColor: 'white',
+            position: 'absolute',
+            top: '30%',
+            boxShadow: '2px 2px 2px black',
+            right: divRight,
+          }}
+        >
+          {showMilitaryAttack && (
             <Row style={{ paddingTop: '13px', paddingBottom: '13px' }}>
               <Col
                 span={6}
@@ -179,7 +249,7 @@ const MilitaryButton = (
                 }}
               >
                 <InputNumber
-                  max={getmaxTerritoryInfluence(data)}
+                  max={getmaxTerritoryInfluence(turnData.current)}
                   onChange={(value: any) => {
                     setAttackValue(value);
                   }}
@@ -200,13 +270,15 @@ const MilitaryButton = (
                   value={fromAttackTerritory}
                   onChange={(value: any) => setFromAttackTerritory(value)}
                 >
-                  {data.territories.map((territoryName: any, key: any) => {
-                    return (
-                      <Option key={key} value={territoryName.name}>
-                        {territoryName.name}
-                      </Option>
-                    );
-                  })}
+                  {turnData.current.territories.map(
+                    (territoryName: any, key: any) => {
+                      return (
+                        <Option key={key} value={territoryName.name}>
+                          {territoryName.name}
+                        </Option>
+                      );
+                    }
+                  )}
                 </Select>
               </Col>
               <Col
@@ -223,8 +295,7 @@ const MilitaryButton = (
                   value={attackTerritory}
                   onChange={(value: any) => setAttackTerritory(value)}
                 >
-                  {/* IN THE BACKEND CHECK IF YOU ARE OWNER OF TERRITORY, IF YOU ARE, MOVE THEM */}
-                  {data.allTerritories.map(
+                  {turnData.current.allTerritories.map(
                     (allTerritoriesName: any, key: any) => {
                       return (
                         <Option key={key} value={allTerritoriesName.name}>
@@ -253,55 +324,8 @@ const MilitaryButton = (
                 </Button>
               </Col>
             </Row>
-            <Row style={{ paddingTop: '13px', paddingBottom: '13px' }}>
-              <Col
-                span={6}
-                style={{
-                  display: 'flex',
-                  fontSize: '18px',
-                  justifyContent: 'flex-end',
-                  paddingRight: '15px',
-                }}
-              >
-                <p>How many attack influence?</p>
-              </Col>
-              <Col
-                span={6}
-                style={{
-                  display: 'flex',
-                  fontSize: '18px',
-                  justifyContent: 'flex-end',
-                  paddingRight: '15px',
-                }}
-              >
-                <p>From where do we attack</p>
-              </Col>
-              <Col
-                span={6}
-                style={{
-                  display: 'flex',
-                  fontSize: '18px',
-                  justifyContent: 'flex-end',
-                  paddingRight: '15px',
-                }}
-              >
-                <p>Who should we attack?</p>
-              </Col>
-              <Col
-                span={6}
-                style={{
-                  display: 'flex',
-                  fontSize: '18px',
-                  justifyContent: 'flex-end',
-                  paddingRight: '15px',
-                }}
-              >
-                <p>Confirm attack?</p>
-              </Col>
-            </Row>
-          </div>
-        )}
-        ;
+          )}
+        </div>
       </>
     );
   } else {

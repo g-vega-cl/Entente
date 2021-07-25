@@ -5,13 +5,14 @@ import EventCards from '../../eventCards/eventCards.model.js';
 import findMatch from '../../routes/match/findMatch.js';
 import getTurnAfterEvent from '../../getTurn/getTurnAfterEvent.js';
 import getTurnMilitaryMove from '../../getTurn/getTurnMilitaryMove.js';
+import getTurnMilitary from '../../getTurn/getTurnMilitary.js';
 
 const aiLoop = async () => {
   const openMatches = await Match.find({ open: true });
   const closedMatches = await Match.find({ open: false });
   // eslint-disable-next-line no-restricted-syntax
   for await (const match of openMatches) {
-    if ((new Date().getTime() - new Date(match?.lastTurn).getTime()) / 1000 > 60) {
+    if ((new Date().getTime() - new Date(match?.lastTurn).getTime()) / 1000 > 35) {
       const data = {
         name: `AI_BOT_${uuidv4()}`,
         preferredNation: 'France',
@@ -30,9 +31,10 @@ const aiLoop = async () => {
         // eslint-disable-next-line no-restricted-syntax
         let nationName = '';
         const matchNations = Object.keys(match.nations);
+        let nation = {};
         // eslint-disable-next-line no-restricted-syntax
         for await (const nationKey of matchNations) {
-          const nation = match.nations[nationKey];
+          nation = match.nations[nationKey];
           if (`${user?._id}` === `${nation?.useridentifier}`) {
             nationName = nation?.name;
           }
@@ -56,11 +58,16 @@ const aiLoop = async () => {
         } else {
           const myStrongestTerritory = { name: '', influence: 0 };
           const theWeakestTerritory = { name: '', influence: 9999999999 };
+          const myWeakestTerritory = { name: '', influence: 9999999999 };
           match.territories.forEach((territory) => {
             if (territory.owner.toLocaleLowerCase() === nationName.toLocaleLowerCase()) {
               if (territory.influence > myStrongestTerritory.influence) {
                 myStrongestTerritory.influence = territory.influence;
                 myStrongestTerritory.name = territory.name;
+              }
+              if (territory.influence < myWeakestTerritory.influence) {
+                myWeakestTerritory.influence = territory.influence;
+                myWeakestTerritory.name = territory.name;
               }
             } else if (territory.influence < theWeakestTerritory.influence) {
               theWeakestTerritory.influence = territory.influence;
@@ -72,6 +79,15 @@ const aiLoop = async () => {
             await getTurnMilitaryMove(match, user, match._id, theWeakestTerritory.name,
               myStrongestTerritory.name,
               (myStrongestTerritory.influence * 0.2).toFixed());
+          }
+
+          // BUY Influence.
+          if (nation.cash > 0) {
+            getTurnMilitary(match,
+              user,
+              match._id,
+              (nation.cash * 0.6).toFixed(),
+              myWeakestTerritory.name);
           }
         }
       }

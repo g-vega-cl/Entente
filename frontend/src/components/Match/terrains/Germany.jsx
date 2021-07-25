@@ -36,7 +36,7 @@ const Germany = ({
           setSelectedWestGermany(false);
         }}
         onClick={() => {
-          setClickedRegion('SouthGermany');
+          setClickedRegion('WestGermany');
         }}
       />
       <p
@@ -74,7 +74,7 @@ const Germany = ({
           setSelectedSouthGermany(false);
         }}
         onClick={() => {
-          setClickedRegion('WestGermany');
+          setClickedRegion('SouthGermany');
         }}
       />
       <p

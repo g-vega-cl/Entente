@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Button, Col, Row } from 'antd';
 import {
   uniqueNamesGenerator,
@@ -8,19 +8,10 @@ import {
 } from 'unique-names-generator';
 import getRandomFlag from './getRandomFlag';
 import preferredCountrySelect from './preferredCountrySelect';
-import { useHistory } from 'react-router-dom';
-import { ioContext } from '../../App';
-import GetTurn from '../Match/GetTurn';
-import axios from 'axios';
-
-const requestAxios = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}`,
-  timeout: 1000,
-});
+import GetMatchData from '../Loop/GetMatchData';
+import requestAxios from '../Axios/requestAxios';
 
 const Lobby = () => {
-  const io = useContext(ioContext);
-  const history = useHistory();
   const [name, setName] = useState<string>(
     localStorage.getItem('user_name') || ''
   );
@@ -28,8 +19,11 @@ const Lobby = () => {
   const [matchUserCountSocket, setMatchUserCountSocket] = useState<any>(1);
   const [findMatchSquareVisible, setFindSquareVisible] =
     useState<boolean>(false);
-  const [findMatchEmitted, setFindMatchEmitted] = useState<boolean>(false);
-  console.log('Lobby again?');
+  const findMatchEmitted = useRef<boolean>(false);
+  const findMatchEmitted2 = useRef<boolean>(false);
+  const [refreshTurnData, setRefreshTurnData] = useState(false);
+  const matchID = useRef<string>('');
+  const [showEvent, setShowEvent] = useState(true);
 
   useEffect(() => {
     if (!name) {
@@ -51,11 +45,24 @@ const Lobby = () => {
       preferredNation,
     };
     await requestAxios.post(`/match/find_match`, matchData).then((res) => {
-      console.log('res', res);
+      findMatchEmitted.current = true;
+      matchID.current = res.data.matchID;
     });
     localStorage.setItem('user_name', name);
     toggleSquare();
   };
+
+  GetMatchData(
+    matchID.current,
+    refreshTurnData,
+    setRefreshTurnData,
+    'find_match',
+    findMatchEmitted,
+    findMatchEmitted2,
+    true,
+    showEvent,
+    setShowEvent
+  );
 
   return (
     <div

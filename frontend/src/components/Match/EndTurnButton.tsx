@@ -1,13 +1,13 @@
 import { Tooltip } from 'antd';
 
 // DO THIS ONE AND ALSO THE TIMER. ALSO A TIMER THAT REFRESHES DATA EVERY 10 SECONDS
-const EndTurnButton = (data: any, io: any, user_name: any, match_id: any) => {
+const EndTurnButton = (data: any) => {
   const indicatorsFontSize = '24px';
   const getTimeLeft = () => {
     if (data?.lastTurn) {
       const now = new Date();
       const secondsLeft = (
-        120 -
+        90 -
         (now.getTime() - new Date(data?.lastTurn).getTime()) / 1000
       ).toFixed(0);
       return `${secondsLeft}`;
@@ -15,9 +15,9 @@ const EndTurnButton = (data: any, io: any, user_name: any, match_id: any) => {
     return '120';
   };
 
-  if (data.nation_name) {
+  if (data?.nation_name) {
     return (
-      <Tooltip title='End turn'>
+      <Tooltip title='Time before next event'>
         <div
           style={{
             position: 'absolute',
@@ -43,7 +43,7 @@ const EndTurnButton = (data: any, io: any, user_name: any, match_id: any) => {
       </Tooltip>
     );
   } else {
-    return <p>loading...</p>;
+    return <></>;
   }
 };
 
