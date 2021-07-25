@@ -8,7 +8,7 @@ const { ObjectId } = mongodb;
 const joinMatch = async (currentMatch, userId, data) => {
   const nationFound = { found: false };
   Object.keys(currentMatch.nations).every(async (key) => {
-    if (key === data.preferredNation) {
+    if (key.toLocaleLowerCase() === data.preferredNation.toLocaleLowerCase()) {
       let availiableNation = {};
       if (!currentMatch.nations[key].online) {
         const newNation = currentMatch.nations[key];

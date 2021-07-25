@@ -5,6 +5,7 @@ const buildMatch = async (currentMatch) => {
 
   if (finalCurrentMatch.onlineUsers === 2) {
     await Match.findOneAndUpdate({ _id: currentMatch._id }, { open: false });
+    await Match.findOneAndUpdate({ _id: currentMatch._id }, { lastTurn: new Date() });
   }
 
   return finalCurrentMatch;

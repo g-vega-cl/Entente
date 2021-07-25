@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 import mongodb from 'mongodb';
 import Match from '../models/match.model.js';
-import EventCards from '../eventCards/eventCards.model.js';
+import getTurnBeforeEvent from './getTurnBeforeEvent.js';
 
 const { ObjectId } = mongodb;
 
@@ -14,7 +14,6 @@ const getRefreshMatchLoop = async (
   if (match?.nations) {
     nationsKeys = Object.keys(match?.nations);
   }
-
   // eslint-disable-next-line no-restricted-syntax
   for await (const nationKey of nationsKeys) {
     const nation = match.nations[nationKey];
@@ -35,8 +34,7 @@ const getRefreshMatchLoop = async (
         },
         { new: true },
       );
-      await new Promise((resolve) => setTimeout(resolve, 55));
-
+      turnData.cash = newNation.nations[nationKey].cash;
       turnData.stability = newNation.nations[nationKey].stability;
       turnData.innovation = newNation.nations[nationKey].innovation;
       turnData.authority = newNation.nations[nationKey].authority;
@@ -56,7 +54,15 @@ const getRefreshMatchLoop = async (
         });
       });
       turnData.allTerritories = match.territories;
+      turnData.lastTurn = match.lastTurn;
     }
+  }
+
+  if (((new Date().getTime() - new Date(match?.lastTurn).getTime()) / 1000) > 90) {
+    const newTurnData = await getTurnBeforeEvent(match, user);
+    await Match.findOneAndUpdate({ _id: match._id }, { lastTurn: new Date() });
+    await Match.findOneAndUpdate({ _id: match._id }, { year: match?.year + 1 });
+    return newTurnData;
   }
   return turnData;
 };

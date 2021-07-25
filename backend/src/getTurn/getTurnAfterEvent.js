@@ -44,7 +44,25 @@ const getTurnAfterEvent = async (match, user, match_id, eventChoice, eventId) =>
           }
         }
       });
+
       nation.turn = 1;
+      let incomeModifier = 1;
+      nation.modifiers.forEach((modifier) => {
+        if (modifier.name === 'income') {
+          incomeModifier *= modifier.value;
+        }
+      });
+
+      let currentIncome = 0;
+      match.nations[nationKey].territories.forEach((ownedTerritory) => {
+        match.territories.forEach((matchTerritory) => {
+          if (ownedTerritory === matchTerritory.name) {
+            currentIncome += matchTerritory.income * incomeModifier;
+          }
+        });
+      });
+
+      nation.cash += currentIncome;
 
       const newNation = await Match.findOneAndUpdate({
         _id: new ObjectId(match_id),
@@ -59,7 +77,6 @@ const getTurnAfterEvent = async (match, user, match_id, eventChoice, eventId) =>
         },
       },
       { new: true });
-      await new Promise((resolve) => setTimeout(resolve, 55));
 
       turnData.stability = newNation.nations[nationKey].stability;
       turnData.innovation = newNation.nations[nationKey].innovation;
@@ -76,11 +93,12 @@ const getTurnAfterEvent = async (match, user, match_id, eventChoice, eventId) =>
         match.territories.forEach((matchTerritory) => {
           if (ownedTerritory === matchTerritory.name) {
             turnData.territories.push(matchTerritory);
-            turnData.income += matchTerritory.income;
+            turnData.income += matchTerritory.income * incomeModifier;
           }
         });
       });
       turnData.allTerritories = match.territories;
+      turnData.lastTurn = match.lastTurn;
     }
   }
   return turnData;

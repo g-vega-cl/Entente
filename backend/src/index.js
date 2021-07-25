@@ -8,6 +8,7 @@ import { Server } from 'socket.io';
 import indexRouter from './routes/index/index.js';
 import startSocket from './socket/sockets.js';
 import matchRouter from './routes/match/match.api.js';
+import mainLoop from './Loop/Ai/MainLoop.js';
 
 dotenv.config();
 const app = express();
@@ -34,5 +35,10 @@ mongoose
   .connect(process.env.CONNECTION_URL, mongooseOptions)
   .then(() => httpServer.listen(PORT, () => console.log('Server running on port 5000')))
   .catch((e) => console.log(e.message));
+
+setInterval(() => {
+  console.log('Main loop', new Date());
+  mainLoop();
+}, 15000);
 
 export default app;

@@ -79,6 +79,7 @@ const getTurnMilitary = async (
         });
       });
       turnData.allTerritories = match.territories;
+      turnData.lastTurn = match.lastTurn;
     }
   }
   return turnData;

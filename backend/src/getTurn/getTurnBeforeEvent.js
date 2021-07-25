@@ -35,6 +35,7 @@ const getTurnBeforeEvent = async (match, user) => {
         });
       });
       turnData.allTerritories = match.territories;
+      turnData.lastTurn = match.lastTurn;
     }
   }
   return turnData;

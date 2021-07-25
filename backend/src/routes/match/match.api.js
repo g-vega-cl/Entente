@@ -29,6 +29,8 @@ router.post('/get_match_data', async (req, res) => {
     }
   }
   if (data.action === 'refresh_match') {
+    data.match_id = data.matchID;
+    data.user_name = data.name;
     const result = await getTurn(data, 'refreshMatch');
     if (result) {
       res.status(200).send(result);

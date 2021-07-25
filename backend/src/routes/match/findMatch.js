@@ -8,6 +8,10 @@ const findMatch = async (data) => {
   const user = await User.findOneAndUpdate({ name: data.name }, {
     name: data.name,
     online: true,
+    ai: {
+      online: false,
+      lastYearPlayed: 2020,
+    },
   }, {
     new: true,
     upsert: true,
