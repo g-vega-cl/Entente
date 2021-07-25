@@ -37,8 +37,7 @@ mongoose
   .catch((e) => console.log(e.message));
 
 setInterval(() => {
-  console.log('Main loop', new Date());
   mainLoop();
-}, 15000);
+}, 5500);
 
 export default app;

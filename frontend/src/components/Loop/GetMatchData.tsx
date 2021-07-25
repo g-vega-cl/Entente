@@ -27,7 +27,7 @@ const GetMatchData = (
     sendData.current.action = 'refresh_match';
   }
 
-  const interval = 3000;
+  const interval = 2000;
 
   if (run) {
     if (loop1.current) {
